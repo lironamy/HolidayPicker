@@ -65,9 +65,11 @@ Start the development front:
 
 - npm start
 
+
 Open your web browser and go to http://localhost:3000 to access the Holiday Picker.
 
-API Endpoints
+## API Endpoints
+
 GET /vacations: Get all vacations.
 POST /api/vacations: Add a new vacation (requires admin authentication).
 PUT /vacations/:vacationId: Edit a vacation (requires admin authentication).
@@ -75,6 +77,16 @@ DELETE /vacations/:vacationId: Delete a vacation (requires admin authentication)
 POST /follow/:vacationId: Follow a vacation (requires user authentication).
 POST /unfollow/:vacationId: Unfollow a vacation (requires user authentication).
 POST /login: User login.
+
+## Screenshots
+
+![SignUp](https://github.com/lironamy/HolidayPicker/assets/122408173/02b5292b-8e7a-4852-aeaa-fef7b87b3255)
+
+![Login](https://github.com/lironamy/HolidayPicker/assets/122408173/0f4be9e8-58d8-4484-9432-631e374427d3)
+
+![VacationReport](https://github.com/lironamy/HolidayPicker/assets/122408173/a37b1d51-06da-4677-83c1-c1b50bae453c)
+
+![EditVacation](https://github.com/lironamy/HolidayPicker/assets/122408173/52006ca5-ad8e-4d19-9b86-0b518ce41d35)
 
 ## Contributing
 
