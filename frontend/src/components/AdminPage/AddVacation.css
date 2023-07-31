@@ -1,0 +1,67 @@
+.input__file{
+    padding: 10px 16px;
+    height: fit-content;
+}
+
+.wrap{
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.mainAdd{
+	width: 350px;
+	height: min-content;
+	background: rgba(0,0,0,.5);
+	overflow: hidden;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+}
+.mainAdd button{
+	width: 150px;
+    
+
+}
+
+/* Add this CSS to your styles */
+.custom-file-upload {
+    display: block;
+    width: 280px;
+    margin: 10px auto;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .custom-file-upload img {
+    max-width: 250px; /* Adjust the size of the images as needed */
+    margin: 10px auto;
+    display: block;
+  }
+  
+  .custom-file-upload:hover {
+    background-color: #e0dede;
+  }
+  
+  .input__file_edit {
+    display: none; /* Hide the actual file input */
+  }
+
+  @media screen and (max-width: 600px) {
+
+    .editLabel{
+        margin: 10px;
+    }
+    .custom-file-upload {
+        width: 80%;
+        overflow: hidden;
+    }
+    /* .custom-file-upload img {
+        max-width: 100%;
+        
+    } */
+ 
+  }
+  
