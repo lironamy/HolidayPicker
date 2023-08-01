@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "build": "npm run install && npm run compile",
+    "build": "npm install && npm run compile",
     "start": "node app.js",
     "install": "npm install",
     "compile": "npx tsc"
