@@ -6,7 +6,6 @@
   "scripts": {
     "build": "npm install && npm run compile",
     "start": "node app.js",
-    "install": "npm install",
     "compile": "npx tsc"
   },
   "keywords": [],
