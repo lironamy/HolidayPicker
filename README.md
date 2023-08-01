@@ -1,4 +1,4 @@
-# Vacation Management App
+# Holiday Picker App
 
 ![Holiday Picker App](https://github.com/lironamy/HolidayPicker/assets/122408173/0a781287-4afd-40f8-8698-b0c56445da37)
  Holiday Picker App is a full-stack web application built using React, Node.js, TypeScript, and SQL. It provides a comprehensive solution for vacation administration and exploration, allowing administrators to manage vacations and users to follow their favorite travel opportunities. With an interactive UI, pagination, and secure authentication, this app ensures a seamless and delightful experience for all users.
