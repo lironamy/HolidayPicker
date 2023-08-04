@@ -39,11 +39,10 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 const conn = mysql_1.default.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    port: 3307,
-    database: 'VacationDB',
+    host: 'srv625.hstgr.io',
+    user: 'u836564938_root',
+    password: 'Ladygaga2',
+    database: 'u836564938_vacationdb',
 });
 conn.connect(error => {
     if (error)
@@ -61,14 +60,14 @@ const storage = (0, multer_1.diskStorage)({
 });
 const upload = (0, multer_1.default)({ storage: storage });
 app.post('/api/vacations/upload', upload.single('image'), (req, res) => {
-    console.log('Received request to /api/vacations/upload');
+    console.log('Received request to upload');
     const file = req.file;
     if (!file) {
         console.log('No file received');
         return res.status(400).json({ error: 'No file received' });
     }
     console.log('File uploaded successfully');
-    res.status(200).json({ filename: file.filename }); // respond with the filename
+    res.status(200).json({ filename: file.filename });
 });
 app.post('/api/vacations/upload/update', upload.single('image'), (req, res) => {
     console.log('Received request to /api/vacations/upload');
@@ -78,7 +77,7 @@ app.post('/api/vacations/upload/update', upload.single('image'), (req, res) => {
         return res.status(200).json({ message: 'No file received, but the request was successful' });
     }
     console.log('File uploaded successfully');
-    res.status(200).json({ filename: file.filename }); // respond with the filename
+    res.status(200).json({ filename: file.filename });
 });
 app.get('/', (req, res) => {
     res.send('Hello World!');

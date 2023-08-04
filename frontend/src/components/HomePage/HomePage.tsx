@@ -3,8 +3,8 @@ import './HomePage.css';
 import Swal from 'sweetalert2';
 
 interface Credentials {
-  first_name?: string;
-  last_name?: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 }
@@ -95,7 +95,6 @@ const HomePage: FC = () => {
           confirmButtonText: 'Ok',
         });
       } else {
-        // Registration was successful, now let's log in the user
         const loginResponse = await fetch('http://localhost:3000/login', {
           method: 'POST',
           headers: {

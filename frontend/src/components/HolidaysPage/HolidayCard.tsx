@@ -16,7 +16,6 @@ interface Vacation {
   startDate: string;
   endDate: string;
   vacation_destination: string;
-  follower_count: number;
   userId: number;
 }
 
@@ -47,11 +46,6 @@ const HolidayCard: FC<HolidayCardProps> = ({ holiday, followedVacations, userFol
     const [isFollowed, setIsFollowed] = useState(holiday.isFollowed);
     const heartStyle = { color: "red", fontSize: "2em" }
     
-  
-    useEffect(() => {
-      setIsFollowed(followedVacations.some((vacation) => vacation.vacation_id === holiday.vacation_id));
-    }, [followedVacations, holiday]);
-
   useEffect(() => {
     const isVacationFollowed = followedVacations.some((vacation) => vacation.vacation_id === holiday.vacation_id);
     setIsFollowed(isVacationFollowed);

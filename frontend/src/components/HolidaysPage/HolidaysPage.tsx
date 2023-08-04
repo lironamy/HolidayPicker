@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilterCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import Nav from '../Nav/Nav';
+import { Console } from 'console';
 
 
 interface Vacation {
@@ -115,6 +116,7 @@ const HolidayPage: FC = () => {
       }
       let data = await response.json();
       setVacations(data);
+
     } catch (error) {
       console.error('Failed to fetch vacations', error);
     }
@@ -137,6 +139,8 @@ const HolidayPage: FC = () => {
       setVacations(data);
       const reportValue = data ? data : 0;
       setReport(reportValue);
+
+      console.log(reportValue);
     } catch (error) {
       console.error('Failed to fetch vacations', error);
     }
@@ -167,6 +171,8 @@ const HolidayPage: FC = () => {
       }
     };
 
+
+
     const userFollowVacation = async (userId: number, vacationId: number) => {
         try {
           const token = localStorage.getItem('token');
@@ -190,6 +196,8 @@ const HolidayPage: FC = () => {
           console.error('Failed to follow vacation', error);
         }
       };
+
+
       
       const unfollowVacation = async (userId: number, vacationId: number) => {
         try {

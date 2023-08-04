@@ -1,6 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
-import mysql, { Connection } from "mysql";
+import mysql from "mysql";
 import fs from 'fs';
 import * as fastcsv from 'fast-csv';
 import jsonwebtoken from "jsonwebtoken";
@@ -12,13 +12,11 @@ const app: Express = express();
 app.use(cors());
 app.use(express.json());
 
-
 const conn: mysql.Connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    port: 3307,
-    database: 'VacationDB',
+    host: 'srv625.hstgr.io',
+    user: 'u836564938_root',
+    password: 'Ladygaga2',
+    database: 'u836564938_vacationdb',
 });
 
 conn.connect(error => {
@@ -39,9 +37,8 @@ const storage = diskStorage({
 
 const upload = multer({ storage: storage });
 
-
 app.post('/api/vacations/upload', upload.single('image'), (req: Request, res: Response) => {
-    console.log('Received request to /api/vacations/upload');
+    console.log('Received request to upload');
 
     const file = req.file;
 
@@ -51,7 +48,7 @@ app.post('/api/vacations/upload', upload.single('image'), (req: Request, res: Re
     }
 
     console.log('File uploaded successfully');
-    res.status(200).json({ filename: file.filename });  // respond with the filename
+    res.status(200).json({ filename: file.filename }); 
 });
 
 app.post('/api/vacations/upload/update', upload.single('image'), (req: Request, res: Response) => {
@@ -65,9 +62,8 @@ app.post('/api/vacations/upload/update', upload.single('image'), (req: Request, 
     }
 
     console.log('File uploaded successfully');
-    res.status(200).json({ filename: file.filename });  // respond with the filename
+    res.status(200).json({ filename: file.filename });
 });
-
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
@@ -108,7 +104,6 @@ app.post('/register', (req: Request, res: Response) => {
 
 app.post('/login', (req: Request, res: Response) => {
     const { email, password } = req.body;
-
     const emailRegex = /\S+@\S+\.\S+/;
     if (!email || !password) {
         return res.status(400).json({ error: "Both email and password are required." });
