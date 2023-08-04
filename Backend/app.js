@@ -39,7 +39,7 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 const conn = mysql_1.default.createConnection({
-    host: 'srv625.hstgr.io',
+    host: '185.249.224.52',
     user: 'u836564938_root',
     password: 'Ladygaga2',
     database: 'u836564938_vacationdb',
