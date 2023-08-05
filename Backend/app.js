@@ -38,16 +38,17 @@ const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-const conn = mysql_1.default.createConnection({
-    host: '185.249.224.52',
+const pool = mysql_1.default.createPool({
+    host: 'srv625.hstgr.io',
     user: 'u836564938_root',
     password: 'Ladygaga2',
     database: 'u836564938_vacationdb',
 });
-conn.connect(error => {
-    if (error)
-        throw error;
-    console.log('Successfully connected to the database.');
+pool.on('connection', (connection) => {
+    console.log('MySQL Connected');
+});
+pool.on('error', (err) => {
+    console.error('MySQL error:', err);
 });
 app.use('/vacation_images', express_1.default.static('./vacation_images'));
 const storage = (0, multer_1.diskStorage)({
@@ -94,22 +95,28 @@ app.post('/register', (req, res) => {
     if (!emailRegex.test(email)) {
         return res.status(400).json({ error: "Invalid email" });
     }
-    conn.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
-        console.log(results);
-        if (error) {
-            console.error(error);
-            return res.status(500).json({ error: "An error occurred while registering." });
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.error('Error getting MySQL connection:', err);
+            return res.status(500).json({ error: 'An error occurred while registering.' });
         }
-        if (results.length > 0) {
-            return res.status(409).json({ error: "A user with this email already exists" });
-        }
-        const sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
-        conn.query(sql, [first_name, last_name, email, password], (error, results) => {
+        connection.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
+            connection.release(); // Release the connection back to the pool
             if (error) {
                 console.error(error);
                 return res.status(500).json({ error: "An error occurred while registering." });
             }
-            res.status(201).json({ message: "User registered successfully." });
+            if (results.length > 0) {
+                return res.status(409).json({ error: "A user with this email already exists" });
+            }
+            const sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
+            connection.query(sql, [first_name, last_name, email, password], (error, results) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).json({ error: "An error occurred while registering." });
+                }
+                res.status(201).json({ message: "User registered successfully." });
+            });
         });
     });
 });
@@ -126,7 +133,7 @@ app.post('/login', (req, res) => {
         return res.status(400).json({ error: "Password must be at least 4 characters long." });
     }
     const sql = "SELECT * FROM users WHERE email = ?";
-    conn.query(sql, [email], (error, results) => {
+    pool.query(sql, [email], (error, results) => {
         if (error) {
             console.error(error);
             return res.status(500).json({ error: "An error occurred while logging in." });
@@ -149,14 +156,19 @@ app.get('/user', authMiddleware_1.default, (req, res) => {
 });
 app.get('/vacations', (req, res) => {
     const sql = "SELECT * FROM vacations";
-    conn.query(sql, (err, results) => {
+    pool.getConnection((err, connection) => {
         if (err) {
-            console.error(err);
-            res.status(500).json({ error: "An error occurred while retrieving data." });
+            console.error('Error getting MySQL connection:', err);
+            return res.status(500).json({ error: 'Failed to fetch vacations' });
         }
-        else {
+        connection.query(sql, (err, results) => {
+            connection.release(); // Release the connection back to the pool
+            if (err) {
+                console.error('Error executing query:', err);
+                return res.status(500).json({ error: 'Failed to fetch vacations' });
+            }
             res.status(200).json(results);
-        }
+        });
     });
 });
 app.post('/api/vacations', (req, res) => {
@@ -177,7 +189,7 @@ app.post('/api/vacations', (req, res) => {
         INSERT INTO vacations (vacation_destination, vacation_description, vacation_start, vacation_end, price, vacation_image_file_name) 
         VALUES (?, ?, ?, ?, ?, ?)
     `;
-    conn.query(sql, [destination, description, startDate, endDate, price, imageFileName], (err, result) => {
+    pool.query(sql, [destination, description, startDate, endDate, price, imageFileName], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).json({ error: "An error occurred while inserting data." });
@@ -200,7 +212,7 @@ app.put('/vacations/:id', upload.single('imageFileName'), (req, res) => {
     if (new Date(startDate) >= new Date(endDate)) {
         return res.status(400).json({ error: "End date should be after start date" });
     }
-    conn.query('SELECT * FROM vacations WHERE vacation_id = ?', [id], (err, result) => {
+    pool.query('SELECT * FROM vacations WHERE vacation_id = ?', [id], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "An error occurred while updating data." });
@@ -213,7 +225,7 @@ app.put('/vacations/:id', upload.single('imageFileName'), (req, res) => {
                 SET vacation_destination = ?, vacation_description = ?, vacation_start = ?, vacation_end = ?, price = ?, vacation_image_file_name = ?
                 WHERE vacation_id = ?
             `;
-            conn.query(sql, [destination, description, startDate, endDate, price, newImageFileName, id], (err, result) => {
+            pool.query(sql, [destination, description, startDate, endDate, price, newImageFileName, id], (err, result) => {
                 if (err) {
                     console.error(err);
                     res.status(500).json({ error: "An error occurred while updating data." });
@@ -236,7 +248,7 @@ app.put('/vacations/:id', upload.single('imageFileName'), (req, res) => {
 app.delete('/vacations/:id', (req, res) => {
     const id = req.params.id;
     const sql = "DELETE FROM vacations WHERE vacation_id = ?";
-    conn.query(sql, [id], (err, result) => {
+    pool.query(sql, [id], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).json({ error: "An error occurred while deleting data." });
@@ -254,18 +266,16 @@ app.delete('/vacations/:id', (req, res) => {
 app.get('/vacations/:id', (req, res) => {
     const id = req.params.id;
     const sql = "SELECT * FROM vacations WHERE vacation_id = ?";
-    conn.query(sql, [id], (err, results) => {
+    pool.query(sql, [id], (err, results) => {
         if (err) {
             console.error(err);
-            res.status(500).json({ error: "An error occurred while fetching data." });
+            return res.status(500).json({ error: "An error occurred while fetching data." });
+        }
+        if (results.length > 0) {
+            res.status(200).json(results[0]);
         }
         else {
-            if (results.length > 0) {
-                res.status(200).json(results[0]);
-            }
-            else {
-                res.status(404).json({ error: "No vacation found with the provided ID" });
-            }
+            res.status(404).json({ error: "No vacation found with the provided ID" });
         }
     });
 });
@@ -276,7 +286,7 @@ app.post('/follow', (req, res) => {
         return;
     }
     const sql = "INSERT INTO followers (user_id, vacation_id) VALUES (?, ?)";
-    conn.query(sql, [user_id, vacation_id], (err, results) => {
+    pool.query(sql, [user_id, vacation_id], (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).json({ error: "An error occurred while following the vacation." });
@@ -294,7 +304,7 @@ app.get('/user/:user_id/followed', (req, res) => {
       JOIN followers f ON v.vacation_id = f.vacation_id
       WHERE f.user_id = ?;
     `;
-    conn.query(sql, [userId], (err, results) => {
+    pool.query(sql, [userId], (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "An error occurred while fetching followed vacations.", mysql_error: err.message });
@@ -309,7 +319,7 @@ app.delete('/unfollow', (req, res) => {
         return;
     }
     const sql = "DELETE FROM followers WHERE user_id = ? AND vacation_id = ?";
-    conn.query(sql, [user_id, vacation_id], (err, result) => {
+    pool.query(sql, [user_id, vacation_id], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).json({ error: "An error occurred while unfollowing the vacation." });
@@ -326,13 +336,13 @@ app.delete('/unfollow', (req, res) => {
 });
 app.get('/reportcsv', (req, res) => {
     const sql = `
-    SELECT Vacations.*, COUNT(Followers.user_id) AS follower_count
-    FROM Vacations
-    LEFT JOIN Followers ON Vacations.vacation_id = Followers.vacation_id
-    GROUP BY Vacations.vacation_id
-    ORDER BY follower_count DESC
+    SELECT vacations.*, COUNT(followers.user_id) AS follower_count
+    FROM vacations
+    LEFT JOIN followers ON vacations.vacation_id = followers.vacation_id
+    GROUP BY vacations.vacation_id
+    ORDER BY follower_count DESC    
     `;
-    conn.query(sql, (err, results) => {
+    pool.query(sql, (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).json({ error: "An error occurred while generating the report." });
@@ -351,14 +361,14 @@ app.get('/reportcsv', (req, res) => {
 });
 app.get('/report', (req, res) => {
     const sql = `
-    SELECT Vacations.*, COUNT(Followers.user_id) AS follower_count
-    FROM Vacations
-    LEFT JOIN Followers ON Vacations.vacation_id = Followers.vacation_id
-    GROUP BY Vacations.vacation_id
-    ORDER BY follower_count DESC
+    SELECT vacations.*, COUNT(followers.user_id) AS follower_count
+    FROM vacations
+    LEFT JOIN followers ON vacations.vacation_id = followers.vacation_id
+    GROUP BY vacations.vacation_id
+    ORDER BY follower_count DESC    
     
     `;
-    conn.query(sql, (err, results) => {
+    pool.query(sql, (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).json({ error: "An error occurred while generating the report." });
