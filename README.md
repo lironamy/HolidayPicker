@@ -34,7 +34,6 @@ https://holidaypicker.online/.
 
 - **Responsive Design**: The app is fully responsive, offering consistent performance across various devices and screen sizes.
 
-
 ## Technologies
 
 - Front-End: React, TypeScript, React Router, Axios, Recharts, React Icons
