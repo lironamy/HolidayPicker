@@ -1,6 +1,6 @@
 # Holiday Picker App
 
-![Holiday Picker App](https://github.com/lironamy/HolidayPicker/assets/122408173/0a781287-4afd-40f8-8698-b0c56445da37)
+![Holiday Picker App](https://github.com/lironamy/HolidayPicker/assets/122408173/ac4c1d4e-ea78-45c9-bd15-c12135c97ff3)
  Holiday Picker App is a full-stack web application built using React, Node.js, TypeScript, and SQL. It provides a comprehensive solution for vacation administration and exploration, allowing administrators to manage vacations and users to follow their favorite travel opportunities. With an interactive UI, pagination, and secure authentication, this app ensures a seamless and delightful experience for all users.
 ## Table of Contents
 - [Live Website](#life-website)
@@ -84,13 +84,14 @@ POST /login: User login.
 
 ## Screenshots
 
-![SignUp](https://github.com/lironamy/HolidayPicker/assets/122408173/02b5292b-8e7a-4852-aeaa-fef7b87b3255)
+![SignUp](https://github.com/lironamy/HolidayPicker/assets/122408173/7d9faf44-8ed0-42ae-b10f-5eed282ec55f)
 
-![Login](https://github.com/lironamy/HolidayPicker/assets/122408173/0f4be9e8-58d8-4484-9432-631e374427d3)
+![Login](https://github.com/lironamy/HolidayPicker/assets/122408173/f88b3c1e-38fb-479b-b0c4-750f6167c9c5)
 
-![VacationReport](https://github.com/lironamy/HolidayPicker/assets/122408173/a37b1d51-06da-4677-83c1-c1b50bae453c)
+![VacationReport](https://github.com/lironamy/HolidayPicker/assets/122408173/8568a539-543a-4856-9434-b6938ea9da5f)
 
-![EditVacation](https://github.com/lironamy/HolidayPicker/assets/122408173/52006ca5-ad8e-4d19-9b86-0b518ce41d35)
+
+![EditVacation](https://github.com/lironamy/HolidayPicker/assets/122408173/e1f0dd76-a524-4412-b41e-f860e305f041)
 
 ## Contributing
 
