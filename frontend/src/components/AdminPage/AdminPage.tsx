@@ -105,7 +105,7 @@ const AdminPage: FC = () => {
       try {
         const token = localStorage.getItem('token');
 
-        const response = await fetch('http://localhost:3000/user', {
+        const response = await fetch('https://holidaypicker.onrender.com/user', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -127,7 +127,7 @@ const AdminPage: FC = () => {
     try {
       const token = localStorage.getItem('token');
   
-      const response = await fetch('http://localhost:3000/vacations', {
+      const response = await fetch('https://holidaypicker.onrender.com/vacations', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -146,7 +146,7 @@ const AdminPage: FC = () => {
     const deleteVacation = async (holidayId: number) => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:3000/vacations/${holidayId}`,
+        const response = await fetch(`https://holidaypicker.onrender.com/vacations/${holidayId}`,
           {
             method: 'DELETE',
             headers: {
@@ -194,7 +194,7 @@ const AdminPage: FC = () => {
       try {
         const token = localStorage.getItem('token');
   
-        const response = await fetch('http://localhost:3000/report', {
+        const response = await fetch('https://holidaypicker.onrender.com/report', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

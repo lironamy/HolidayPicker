@@ -81,7 +81,7 @@ const HolidayPage: FC = () => {
       try {
         const token = localStorage.getItem('token');
 
-        const response = await fetch('http://localhost:3000/user', {
+        const response = await fetch('https://holidaypicker.onrender.com/user', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -105,7 +105,7 @@ const HolidayPage: FC = () => {
     try {
       const token = localStorage.getItem('token');
   
-      const response = await fetch('http://localhost:3000/vacations', {
+      const response = await fetch('https://holidaypicker.onrender.com/vacations', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -126,7 +126,7 @@ const HolidayPage: FC = () => {
     try {
       const token = localStorage.getItem('token');
 
-      const response = await fetch('http://localhost:3000/report', {
+      const response = await fetch('https://holidaypicker.onrender.com/report', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -153,7 +153,7 @@ const HolidayPage: FC = () => {
       return;
     }
 
-    const response = await fetch(`http://localhost:3000/user/${userId}/followed`, {
+    const response = await fetch(`https://holidaypicker.onrender.com/user/${userId}/followed`, {
         headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -177,7 +177,7 @@ const HolidayPage: FC = () => {
         try {
           const token = localStorage.getItem('token');
         
-          const response = await fetch('http://localhost:3000/follow', {
+          const response = await fetch('https://holidaypicker.onrender.com/follow', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -203,7 +203,7 @@ const HolidayPage: FC = () => {
         try {
           const token = localStorage.getItem('token');
         
-          const response = await fetch('http://localhost:3000/unfollow', {
+          const response = await fetch('https://holidaypicker.onrender.com/unfollow', {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',

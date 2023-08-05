@@ -51,7 +51,7 @@ const ReportPage: React.FC = () => {
     try {
       const token = localStorage.getItem('token');
 
-      const response = await fetch('http://localhost:3000/user', {
+      const response = await fetch('https://holidaypicker.onrender.com/user', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -71,7 +71,7 @@ const ReportPage: React.FC = () => {
 
 
   useEffect(() => {
-    fetch('http://localhost:3000/report')
+    fetch('https://holidaypicker.onrender.com/report')
       .then(response => response.json())
       .then(data => setReportData(data))
       .catch(error => console.error('Error:', error));

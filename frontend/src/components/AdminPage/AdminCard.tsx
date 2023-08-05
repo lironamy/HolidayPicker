@@ -55,7 +55,7 @@ const AdminCard: FC<AdminCardProps> = ({ holiday, deleteCard, editCard  }) => {
         <div className="card__image-container">
           <img
             className="card__background"
-            src={`http://localhost:3000/vacation_images/${holiday.vacation_image_file_name}`}
+            src={`https://holidaypicker.onrender.com/vacation_images/${holiday.vacation_image_file_name}`}
             alt={holiday.vacation_description}
           />
           
