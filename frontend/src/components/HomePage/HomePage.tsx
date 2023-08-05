@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
 import './HomePage.css';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+
 
 interface Credentials {
   first_name: string;
@@ -10,12 +12,20 @@ interface Credentials {
 }
 
 const HomePage: FC = () => {
+    const navigate = useNavigate();
     const [credentials, setCredentials] = useState<Credentials>({ 
         first_name: '', 
         last_name: '', 
         email: '', 
         password: '' 
     });  
+
+    const NavigationHolidays = () => {
+      navigate('/holidays');
+    };
+    const NavigationAdmin = () => {
+      navigate('/admin');
+    };
       
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({
@@ -51,11 +61,11 @@ const HomePage: FC = () => {
       } else if (data.token && data.role === 'regular') {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.role);
-        window.location.href = '/holidays';
-      } else if (data.token && data.role === 'admin') {
+        NavigationHolidays();
+        } else if (data.token && data.role === 'admin') {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.role);
-        window.location.href = '/admin';
+        NavigationAdmin();
       }
 
     } catch (error) {
@@ -122,7 +132,7 @@ const HomePage: FC = () => {
         } else if (loginData.token && loginData.role === 'regular') {
           localStorage.setItem('token', loginData.token);
           localStorage.setItem('role', loginData.role);
-          window.location.href = '/holidays';
+          NavigationHolidays();
         }
       }
     } catch (error) {

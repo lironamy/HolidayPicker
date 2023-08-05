@@ -5,6 +5,8 @@ import logo from "../../assets/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHand } from "@fortawesome/free-solid-svg-icons";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
+
 
 
 interface UserData {
@@ -14,12 +16,11 @@ interface UserData {
 
 
 const Nav = () => {
-
+    const navigate = useNavigate();
     const Logout = () => {
         localStorage.clear();
-        window.location.href = '/';
-    };
-
+        navigate('/');
+      };
 
     const [loggedInUser, setLoggedInUser] = useState<UserData | null>(null);
 
