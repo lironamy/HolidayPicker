@@ -397,9 +397,7 @@ app.get('/report', (req: Request, res: Response) => {
     SELECT vacations.*, COUNT(followers.user_id) AS follower_count
     FROM vacations
     LEFT JOIN followers ON vacations.vacation_id = followers.vacation_id
-    GROUP BY vacations.vacation_id
-    ORDER BY follower_count DESC    
-    
+    GROUP BY vacations.vacation_id    
     `;
 
     pool.query(sql, (err, results) => {
