@@ -4,9 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "build": "npm install && npx tsc",
-    "start": "nodemon node app.js",
-    "dev": "npx tsc"
+    "build": "npx tsc",
+    "start": "nodemon node app.js"
   },
   "keywords": [],
   "author": "",
