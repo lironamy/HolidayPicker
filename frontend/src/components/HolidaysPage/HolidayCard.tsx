@@ -45,6 +45,8 @@ interface HolidayCardProps {
 const HolidayCard: FC<HolidayCardProps> = ({ holiday, followedVacations, userFollowVacation, unfollowVacation, loggedInUserId }) => {    
     const [isFollowed, setIsFollowed] = useState(holiday.isFollowed);
     const heartStyle = { color: "red", fontSize: "2em" }
+    console.log("Holiday data in card:", holiday);
+
     
   useEffect(() => {
     const isVacationFollowed = followedVacations.some((vacation) => vacation.vacation_id === holiday.vacation_id);
@@ -60,7 +62,7 @@ const HolidayCard: FC<HolidayCardProps> = ({ holiday, followedVacations, userFol
         <div className="card__image-container">
           <img
             className="card__background"
-            src={`https://holidaypicker.onrender.com/vacation_images/${holiday.vacation_image_file_name}`}
+            src={`http://localhost:3000/vacation_images/${holiday.vacation_image_file_name}`}
             alt={holiday.vacation_description}
           />
           

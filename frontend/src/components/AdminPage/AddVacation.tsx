@@ -75,7 +75,7 @@ const AddVacation: FC = () => {
     try {
       const token = localStorage.getItem('token');
 
-      const response = await fetch('https://holidaypicker.onrender.com/user', {
+      const response = await fetch('http://localhost:3000/user', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -104,7 +104,7 @@ const AddVacation: FC = () => {
     console.log('File selected:', credentials.imageFileName.name);
   
     console.log('Sending request to upload the file...');
-    const response = await fetch('https://holidaypicker.onrender.com/api/vacations/upload', {
+    const response = await fetch('http://localhost:3000/api/vacations/upload', {
         method: 'POST',
         body: formData,
     });
@@ -132,7 +132,7 @@ const AddVacation: FC = () => {
         // replace imageFileName in the credentials with the returned filename
         const credentialsWithFilename = { ...credentials, imageFileName: filename };
         
-        const response = await fetch('https://holidaypicker.onrender.com/api/vacations', {
+        const response = await fetch('http://localhost:3000/api/vacations', {
             method: 'POST',
             body: JSON.stringify(credentialsWithFilename),   // use the new credentials object
             headers: {

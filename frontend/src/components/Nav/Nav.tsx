@@ -29,7 +29,7 @@ const Nav = () => {
         try {
           const token = localStorage.getItem('token');
   
-          const response = await fetch('https://holidaypicker.onrender.com/user', {
+          const response = await fetch('http://localhost:3000/user', {
             headers: {
               Authorization: `Bearer ${token}`,
             },

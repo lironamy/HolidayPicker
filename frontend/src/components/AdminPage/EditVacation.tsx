@@ -74,7 +74,7 @@ const EditVacation: FC = () => {
     try {
       const token = localStorage.getItem('token');
 
-      const response = await fetch('https://holidaypicker.onrender.com/user', {
+      const response = await fetch('http://localhost:3000/user', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -106,7 +106,7 @@ const EditVacation: FC = () => {
   const fetchVacationDetails = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://holidaypicker.onrender.com/vacations/${holidayId}`, {
+      const response = await fetch(`http://localhost:3000/vacations/${holidayId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -139,7 +139,7 @@ const EditVacation: FC = () => {
         vacation_destination: data.vacation_destination,
         price: data.price,
       });
-      const imageUrl = data.vacation_image_file_name ? `https://holidaypicker.onrender.com/vacation_images/${data.vacation_image_file_name}` : null;
+      const imageUrl = data.vacation_image_file_name ? `http://localhost:3000/vacation_images/${data.vacation_image_file_name}` : null;
       setCurrentImageURL(imageUrl);
       console.log(data.vacation_image_file_name);
       
@@ -182,7 +182,7 @@ const EditVacation: FC = () => {
     console.log('File selected:', vacation.vacation_image_file_name);
   
     console.log('Sending request to upload the file...');
-    const response = await fetch('https://holidaypicker.onrender.com/api/vacations/upload/update', {
+    const response = await fetch('http://localhost:3000/api/vacations/upload/update', {
         method: 'POST',
         body: formData,
     });
@@ -223,7 +223,7 @@ const EditVacation: FC = () => {
         formData.append('imageFileName', vacation.vacation_image_file_name);
       }
   
-      const response = await fetch(`https://holidaypicker.onrender.com/vacations/${holidayId}`, {
+      const response = await fetch(`http://localhost:3000/vacations/${holidayId}`, {
         method: 'PUT',
         body: formData,
         headers: {
