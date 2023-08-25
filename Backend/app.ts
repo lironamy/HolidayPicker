@@ -51,7 +51,7 @@ app.post('/api/vacations/upload', upload.single('image'), async (req: Request, r
 
     try {
         console.log('Received request to upload');
-        const storageRef = ref(storage, `vacation_images/${file.originalname}`);
+        const storageRef = ref(storage, `${file.originalname}`);
         const metadata = {
             contentType: file.mimetype,
         };
@@ -91,7 +91,7 @@ app.post('/api/vacations/upload/update', upload.single('image'), async (req: Req
     try {
         console.log('Received request to /api/vacations/upload');
 
-        const storageRef = ref(storage, `vacation_images/${file.originalname}`);
+        const storageRef = ref(storage, `${file.originalname}`);
         const metadata = {
             contentType: file.mimetype,
         };
@@ -208,7 +208,7 @@ app.get('/vacations', (req: Request, res: Response) => {
         }
 
         const vacationsWithDownloadURLs = await Promise.all(results.map(async (vacation: { vacation_image_file_name: any; }) => {
-            const storageRef = ref(storage, `vacation_images/${vacation.vacation_image_file_name}`);
+            const storageRef = ref(storage, `${vacation.vacation_image_file_name}`);
             const downloadURL = await getDownloadURL(storageRef);
             return { ...vacation, vacation_image_download_url: downloadURL };
         }));
