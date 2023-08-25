@@ -1,4 +1,7 @@
-import express, { Express, Request, Response, NextFunction } from "express";
+import express, { Express, Request, Response } from "express";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import  config  from "./firebase.config"
 import cors from "cors";
 import mysql from "mysql";
 import fs from 'fs';
@@ -8,9 +11,16 @@ import authenticateJWT from './authMiddleware';
 import multer, { diskStorage } from 'multer';
 import path from 'path';
 
+
 const app: Express = express();
 app.use(cors());
 app.use(express.json());
+
+initializeApp(config.firebaseConfig);
+
+const storage = getStorage();
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const conn = mysql.createConnection({
     host: 'db4free.net', 
@@ -27,22 +37,11 @@ conn.connect((err) => {
     console.log('Connected to MySQL');
 });
 
-app.use('/vacation_images', express.static('./vacation_images'));
 
-const storage = diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, './vacation_images'));
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    },
-});
+// app.use('/vacation_images', express.static('./vacation_images'));
 
-const upload = multer({ storage: storage });
 
-app.post('/api/vacations/upload', upload.single('image'), (req: Request, res: Response) => {
-    console.log('Received request to upload');
-
+app.post('/api/vacations/upload', upload.single('image'), async (req: Request, res: Response) => {
     const file = req.file;
 
     if (!file) {
@@ -50,23 +49,76 @@ app.post('/api/vacations/upload', upload.single('image'), (req: Request, res: Re
         return res.status(400).json({ error: 'No file received' });
     }
 
-    console.log('File uploaded successfully');
-    res.status(200).json({ filename: file.filename }); 
+    try {
+        console.log('Received request to upload');
+        const storageRef = ref(storage, `vacation_images/${file.originalname}`);
+        const metadata = {
+            contentType: file.mimetype,
+        };
+
+        const uploadTask = uploadBytesResumable(storageRef, file.buffer, metadata);
+
+        uploadTask.on('state_changed', (snapshot) => {
+            // You can listen for upload progress here if needed
+        }, (error) => {
+            console.error('Error uploading file:', error);
+            return res.status(500).json({ error: 'An error occurred while uploading the file' });
+        }, () => {
+            // Upload completed successfully
+            getDownloadURL(storageRef).then((downloadURL) => {
+                console.log('File uploaded successfully');
+                res.status(200).json({ filename: file.filename, downloadURL });
+            }).catch((error) => {
+                console.error('Error getting download URL:', error);
+                return res.status(500).json({ error: 'An error occurred while getting download URL' });
+            });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'An error occurred while uploading the file' });
+    }
 });
 
-app.post('/api/vacations/upload/update', upload.single('image'), (req: Request, res: Response) => {
-    console.log('Received request to /api/vacations/upload');
 
+app.post('/api/vacations/upload/update', upload.single('image'), async (req: Request, res: Response) => {
     const file = req.file;
 
     if (!file) {
         console.log('No file received');
-        return res.status(200).json({ message: 'No file received, but the request was successful' });
+        return res.status(400).json({ error: 'No file received' });
     }
 
-    console.log('File uploaded successfully');
-    res.status(200).json({ filename: file.filename });
+    try {
+        console.log('Received request to /api/vacations/upload');
+
+        const storageRef = ref(storage, `vacation_images/${file.originalname}`);
+        const metadata = {
+            contentType: file.mimetype,
+        };
+
+        const uploadTask = uploadBytesResumable(storageRef, file.buffer, metadata);
+
+        uploadTask.on('state_changed', (snapshot) => {
+            // You can listen for upload progress here if needed
+        }, (error) => {
+            console.error('Error uploading file:', error);
+            return res.status(500).json({ error: 'An error occurred while uploading the file' });
+        }, () => {
+            // Upload completed successfully
+            getDownloadURL(storageRef).then((downloadURL) => {
+                console.log('File uploaded successfully');
+                res.status(200).json({ filename: file.filename, downloadURL });
+            }).catch((error) => {
+                console.error('Error getting download URL:', error);
+                return res.status(500).json({ error: 'An error occurred while getting download URL' });
+            });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'An error occurred while uploading the file' });
+    }
 });
+
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
