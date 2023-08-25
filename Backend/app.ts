@@ -201,14 +201,22 @@ app.get('/user', authenticateJWT, (req: Request, res: Response) => {
 
 app.get('/vacations', (req: Request, res: Response) => {
     const sql = "SELECT * FROM vacations";
-    conn.query(sql, (error, results) => {
+    conn.query(sql, async (error, results) => {
         if (error) {
             console.error('Error executing query:', error);
             return res.status(500).json({ error: 'Failed to fetch vacations' });
         }
-        res.status(200).json(results);
+
+        const vacationsWithDownloadURLs = await Promise.all(results.map(async (vacation: { vacation_image_file_name: any; }) => {
+            const storageRef = ref(storage, `vacation_images/${vacation.vacation_image_file_name}`);
+            const downloadURL = await getDownloadURL(storageRef);
+            return { ...vacation, vacation_image_download_url: downloadURL };
+        }));
+
+        res.status(200).json(vacationsWithDownloadURLs);
     });
 });
+
 
 
 
