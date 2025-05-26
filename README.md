@@ -17,7 +17,6 @@
 The live website for the "Holiday Picker App" can be accessed at:
 https://holidaypicker.online/.
 
-
 ## Features
 
 - **Admin Dashboard**: Administrators have access to a dedicated dashboard to efficiently manage vacations. They can add new vacations, edit existing ones, and remove outdated vacations with ease.
