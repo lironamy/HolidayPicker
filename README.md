@@ -37,9 +37,9 @@ https://holidaypicker.online/.
 
 - Front-End: React, TypeScript, React Router, Axios, Recharts, React Icons
 - Back-End: Node.js, Express, TypeScript, JWT (JSON Web Tokens)
-- Database: SQL (MySQL, PostgreSQL, etc.)
+- Database: SQL
 - Package Manager: npm
-- Deployment: (Optional) Heroku, Netlify, or other platforms
+- Deployment: Hostinger
 
 ## Installation
 
